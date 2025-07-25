@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProductivePro - Your All-in-One Productivity Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Auth Screen -->
+    <div id="auth-screen" class="auth-screen">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="logo">
+                    <i class="fas fa-rocket"></i>
+                    <h1>ProductivePro</h1>
+                </div>
+                <p class="auth-subtitle">Your All-in-One Productivity Hub</p>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form" class="auth-form active">
+                <h2>Welcome Back!</h2>
+                <p class="form-subtitle">Sign in to continue your productivity journey</p>
+                
+                <form class="form-content">
+                    <div class="input-field">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="login-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" id="login-btn" class="auth-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="auth-switch">
+                    <p>Don't have an account? <a href="#" id="show-signup">Create one here</a></p>
+                </div>
+            </div>
+
+            <!-- Signup Form -->
+            <div id="signup-form" class="auth-form">
+                <h2>Join ProductivePro!</h2>
+                <p class="form-subtitle">Create your account to start boosting productivity</p>
+                
+                <form class="form-content">
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="signup-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signup-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signup-password" placeholder="Create a password" required>
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signup-confirm-password" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="submit" id="signup-btn" class="auth-btn">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="auth-switch">
+                    <p>Already have an account? <a href="#" id="show-login">Sign in here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="main-app" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <h1>ProductivePro</h1>
+            </div>
+            <nav class="nav-tabs">
+                <button class="tab-btn active" data-tab="todo">
+                    <i class="fas fa-tasks"></i>
+                    To-Do List
+                </button>
+                <button class="tab-btn" data-tab="notes">
+                    <i class="fas fa-sticky-note"></i>
+                    Notes
+                </button>
+                <button class="tab-btn" data-tab="timer">
+                    <i class="fas fa-clock"></i>
+                    Timer
+                </button>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- To-Do List Section -->
+            <section id="todo" class="tab-content active">
+                <div class="section-header">
+                    <h2><i class="fas fa-tasks"></i> Task Manager</h2>
+                    <div class="task-stats">
+                        <span class="stat-item">
+                            <span class="stat-number" id="total-tasks">0</span>
+                            <span class="stat-label">Total</span>
+                        </span>
+                        <span class="stat-item">
+                            <span class="stat-number" id="completed-tasks">0</span>
+                            <span class="stat-label">Completed</span>
+                        </span>
+                        <span class="stat-item">
+                            <span class="stat-number" id="daily-tasks">0</span>
+                            <span class="stat-label">Daily</span>
+                        </span>
+                        <span class="stat-item">
+                            <span class="stat-number" id="progress-tasks">0</span>
+                            <span class="stat-label">In Progress</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="todo-input-section">
+                    <div class="task-type-selector">
+                        <div class="task-type-btn active" data-type="daily">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>Daily Tasks</span>
+                        </div>
+                        <div class="task-type-btn" data-type="onetime">
+                            <i class="fas fa-check-circle"></i>
+                            <span>One-Time Tasks</span>
+                        </div>
+                        <div class="task-type-btn" data-type="descriptive">
+                            <i class="fas fa-list-ol"></i>
+                            <span>Progress Tasks</span>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="todo-input" placeholder="Add a new task...">
+                        <input type="text" id="todo-description" placeholder="Task description (optional)..." style="display: none;">
+                        <select id="todo-priority">
+                            <option value="low">Low Priority</option>
+                            <option value="medium">Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                        <div id="progress-input" style="display: none;">
+                            <input type="number" id="total-steps" placeholder="Total steps" min="1" max="100" value="5">
+                        </div>
+                        <button id="add-todo-btn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Add Task
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <button class="filter-btn active" data-filter="all">All Tasks</button>
+                    <button class="filter-btn" data-filter="daily">Daily</button>
+                    <button class="filter-btn" data-filter="onetime">One-Time</button>
+                    <button class="filter-btn" data-filter="descriptive">Progress</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                </div>
+
+                <div class="todo-list" id="todo-list">
+                    <!-- Tasks will be dynamically added here -->
+                </div>
+            </section>
+
+            <!-- Notes Section -->
+            <section id="notes" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-sticky-note"></i> Quick Notes</h2>
+                    <button id="add-note-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        New Note
+                    </button>
+                </div>
+
+                <div class="notes-grid" id="notes-grid">
+                    <!-- Notes will be dynamically added here -->
+                </div>
+            </section>
+
+            <!-- Timer Section -->
+            <section id="timer" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-clock"></i> Pomodoro Timer</h2>
+                </div>
+
+                <div class="timer-container">
+                    <div class="timer-display">
+                        <div class="timer-circle">
+                            <svg class="progress-ring" width="300" height="300">
+                                <circle class="progress-ring-circle" cx="150" cy="150" r="140" stroke="#e6e6e6" stroke-width="8" fill="transparent"/>
+                                <circle class="progress-ring-progress" cx="150" cy="150" r="140" stroke="#4CAF50" stroke-width="8" fill="transparent"/>
+                            </svg>
+                            <div class="timer-content">
+                                <div class="timer-time" id="timer-display">25:00</div>
+                                <div class="timer-mode" id="timer-mode">Focus Time</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timer-controls">
+                        <button id="timer-start" class="btn btn-success">
+                            <i class="fas fa-play"></i>
+                            Start
+                        </button>
+                        <button id="timer-pause" class="btn btn-warning" style="display: none;">
+                            <i class="fas fa-pause"></i>
+                            Pause
+                        </button>
+                        <button id="timer-reset" class="btn btn-secondary">
+                            <i class="fas fa-undo"></i>
+                            Reset
+                        </button>
+                    </div>
+
+                    <div class="timer-settings">
+                        <div class="setting-group">
+                            <label>Focus Time (minutes)</label>
+                            <input type="number" id="focus-time" value="25" min="1" max="60">
+                        </div>
+                        <div class="setting-group">
+                            <label>Break Time (minutes)</label>
+                            <input type="number" id="break-time" value="5" min="1" max="30">
+                        </div>
+                    </div>
+
+                    <div class="timer-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="sessions-completed">0</span>
+                            <span class="stat-label">Sessions Today</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="focus-minutes">0</span>
+                            <span class="stat-label">Focus Minutes</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- User Menu -->
+        <div class="user-menu">
+            <button class="user-btn" id="user-btn">
+                <i class="fas fa-user-circle"></i>
+                <span id="user-name">User</span>
+            </button>
+            <div class="user-dropdown" id="user-dropdown">
+                <button id="export-data-btn">
+                    <i class="fas fa-download"></i>
+                    Export Data
+                </button>
+                <button id="import-data-btn">
+                    <i class="fas fa-upload"></i>
+                    Import Data
+                </button>
+                <input type="file" id="import-file" accept=".json" style="display: none;">
+                <button id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Note Editing -->
+    <div id="note-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Note</h3>
+                <button class="modal-close" id="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="note-title" placeholder="Note title...">
+                <textarea id="note-content" placeholder="Write your note here..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button id="save-note" class="btn btn-primary">Save Note</button>
+                <button id="delete-note" class="btn btn-danger">Delete Note</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
