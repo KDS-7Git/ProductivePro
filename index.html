@@ -79,6 +79,7 @@
         </div>
     </div>
 
+    <!-- Main App Container -->
     <div class="container" id="main-app" style="display: none;">
         <!-- Header -->
         <header class="header">
@@ -89,17 +90,39 @@
             <nav class="nav-tabs">
                 <button class="tab-btn active" data-tab="todo">
                     <i class="fas fa-tasks"></i>
-                    To-Do List
+                    <span>To-Do List</span>
                 </button>
                 <button class="tab-btn" data-tab="notes">
                     <i class="fas fa-sticky-note"></i>
-                    Notes
+                    <span>Notes</span>
                 </button>
                 <button class="tab-btn" data-tab="timer">
                     <i class="fas fa-clock"></i>
-                    Timer
+                    <span>Timer</span>
                 </button>
             </nav>
+            <div class="user-menu">
+                <button class="user-btn" id="user-btn">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="user-name">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-dropdown" id="user-dropdown">
+                    <button id="export-data-btn">
+                        <i class="fas fa-upload"></i>
+                        Export Data
+                    </button>
+                    <button id="import-data-btn">
+                        <i class="fas fa-download"></i>
+                        Import Data
+                    </button>
+                    <input type="file" id="import-file" accept=".json" style="display: none;">
+                    <button id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
         </header>
 
         <!-- Main Content -->
@@ -109,22 +132,22 @@
                 <div class="section-header">
                     <h2><i class="fas fa-tasks"></i> Task Manager</h2>
                     <div class="task-stats">
-                        <span class="stat-item">
+                        <div class="stat-item">
                             <span class="stat-number" id="total-tasks">0</span>
                             <span class="stat-label">Total</span>
-                        </span>
-                        <span class="stat-item">
+                        </div>
+                        <div class="stat-item">
                             <span class="stat-number" id="completed-tasks">0</span>
                             <span class="stat-label">Completed</span>
-                        </span>
-                        <span class="stat-item">
+                        </div>
+                        <div class="stat-item">
                             <span class="stat-number" id="daily-tasks">0</span>
                             <span class="stat-label">Daily</span>
-                        </span>
-                        <span class="stat-item">
+                        </div>
+                        <div class="stat-item">
                             <span class="stat-number" id="progress-tasks">0</span>
                             <span class="stat-label">In Progress</span>
-                        </span>
+                        </div>
                     </div>
                 </div>
 
@@ -250,29 +273,6 @@
                 </div>
             </section>
         </main>
-
-        <!-- User Menu -->
-        <div class="user-menu">
-            <button class="user-btn" id="user-btn">
-                <i class="fas fa-user-circle"></i>
-                <span id="user-name">User</span>
-            </button>
-            <div class="user-dropdown" id="user-dropdown">
-                <button id="export-data-btn">
-                    <i class="fas fa-download"></i>
-                    Export Data
-                </button>
-                <button id="import-data-btn">
-                    <i class="fas fa-upload"></i>
-                    Import Data
-                </button>
-                <input type="file" id="import-file" accept=".json" style="display: none;">
-                <button id="logout-btn">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Logout
-                </button>
-            </div>
-        </div>
     </div>
 
     <!-- Modal for Note Editing -->

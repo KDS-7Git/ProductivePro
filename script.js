@@ -74,7 +74,9 @@ const progressRing = document.querySelector('.progress-ring-progress');
 
 // ===== Initialization =====
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('ProductivePro initialized');
     checkAuthStatus();
+    setupAuthEventListeners();
 });
 
 function checkAuthStatus() {
@@ -478,6 +480,7 @@ function decrementProgress(id) {
 }
 
 function deleteTodo(id) {
+    console.log('Deleting todo with ID:', id);
     if (confirm('Are you sure you want to delete this task?')) {
         todos = todos.filter(t => t.id !== id);
         saveUserData();
