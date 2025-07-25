@@ -960,6 +960,13 @@ body {
     width: 20px;
     height: 20px;
     cursor: pointer;
+    accent-color: #667eea;
+    transform: scale(1.2);
+    margin-right: 0.5rem;
+}
+
+.todo-checkbox:checked {
+    accent-color: #28a745;
 }
 
 .todo-content {
@@ -1026,8 +1033,12 @@ body {
 .progress-controls {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 1rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(102, 126, 234, 0.05);
+    border-radius: 10px;
 }
 
 .progress-btn {
@@ -1054,8 +1065,11 @@ body {
     font-size: 0.85rem;
     color: #666;
     font-weight: 600;
-    min-width: 45px;
+    min-width: 60px;
     text-align: center;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 0.25rem 0.5rem;
+    border-radius: 15px;
 }
 
 .todo-meta {
@@ -1125,21 +1139,28 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     color: #666;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
 }
 
 .todo-actions button:hover {
-    background: #f5f5f5;
-    color: #333;
-}
-
-.delete-btn:hover {
-    background: rgba(244, 67, 54, 0.1);
-    color: #f44336;
-}
-
-.edit-btn:hover {
     background: rgba(102, 126, 234, 0.1);
     color: #667eea;
+    transform: scale(1.1);
+}
+
+.todo-actions .delete-btn:hover {
+    background: rgba(244, 67, 54, 0.1) !important;
+    color: #f44336 !important;
+}
+
+.todo-actions .edit-btn:hover {
+    background: rgba(33, 150, 243, 0.1) !important;
+    color: #2196f3 !important;
 }
 
 /* ===== Notes Styles ===== */
@@ -1509,176 +1530,124 @@ body {
     text-align: center;
     padding: 3rem;
     color: #999;
+    grid-column: 1 / -1;
 }
 
 .empty-state i {
     font-size: 3rem;
     margin-bottom: 1rem;
     opacity: 0.3;
+    display: block;
 }
 
 .empty-state h3 {
     margin-bottom: 0.5rem;
     color: #666;
+    font-size: 1.2rem;
 }
 
-/* ===== Responsive Design ===== */
+.empty-state p {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+/* ===== Progress Controls Improvements ===== */
+.progress-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(102, 126, 234, 0.05);
+    border-radius: 10px;
+}
+
+.progress-text {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 600;
+    min-width: 60px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 0.25rem 0.5rem;
+    border-radius: 15px;
+}
+
+/* ===== Checkbox Improvements ===== */
+.todo-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #667eea;
+    transform: scale(1.2);
+    margin-right: 0.5rem;
+}
+
+.todo-checkbox:checked {
+    accent-color: #28a745;
+}
+
+/* ===== Responsive Progress Controls ===== */
 @media (max-width: 768px) {
-    .header {
-        padding: 1rem;
-        gap: 1rem;
-    }
-    
-    .logo h1 {
-        font-size: 1.4rem;
-    }
-    
-    .nav-tabs {
-        gap: 0.25rem;
+    .progress-controls {
+        gap: 0.5rem;
         padding: 0.25rem;
     }
     
-    .tab-btn {
-        padding: 0.75rem 1rem;
-        font-size: 0.85rem;
+    .progress-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
     }
     
-    .tab-btn span {
-        display: none;
-    }
-    
-    .tab-btn i {
-        font-size: 1.1rem;
-    }
-    
-    .user-btn span {
-        display: none;
-    }
-    
-    .user-dropdown {
-        right: -20px;
-        min-width: 180px;
-    }
-
-    .container {
-        margin: 0;
-        border-radius: 0;
-        min-height: 100vh;
-    }
-
-    .main-content {
-        padding: 1rem;
-    }
-
-    .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .input-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .input-group > * {
-        width: 100%;
-    }
-
-    .timer-time {
-        font-size: 2rem;
-    }
-
-    .timer-controls {
-        flex-wrap: wrap;
-    }
-
-    .timer-settings,
-    .timer-stats {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .task-stats {
-        justify-content: center;
-    }
-
-    .modal-content {
-        margin: 10% auto;
-        width: 95%;
-    }
-
-    .modal-footer {
-        flex-direction: column;
-    }
-
-    .notes-grid {
-        grid-template-columns: 1fr;
+    .progress-text {
+        font-size: 0.75rem;
+        min-width: 50px;
+        padding: 0.2rem 0.4rem;
     }
 }
 
-@media (max-width: 480px) {
-    .header {
-        padding: 0.75rem;
+/* ===== Better Focus States ===== */
+.todo-checkbox:focus,
+.progress-btn:focus,
+.todo-actions button:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* ===== Animation for Progress Updates ===== */
+.progress-fill {
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-container {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
     }
-    
-    .nav-tabs {
-        flex: none;
-    }
-    
-    .tab-btn {
-        padding: 0.5rem;
-        min-width: 44px;
-    }
-    
-    .user-btn {
-        padding: 0.5rem;
-        min-width: 44px;
-    }
-
-    .timer-time {
-        font-size: 1.8rem;
-    }
-
-    .task-type-selector {
-        grid-template-columns: 1fr;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-/* ===== Custom Scrollbar ===== */
-::-webkit-scrollbar {
-    width: 8px;
+/* Add these styles to your existing CSS file */
+
+/* ===== Progress Button Disabled States ===== */
+.progress-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+    background: #ccc !important;
 }
 
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-/* ===== Additional Animations ===== */
-.pulse {
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-.bounce {
-    animation: bounce 0.5s ease-in-out;
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-10px); }
-    60% { transform: translateY(-5px); }
+.progress-btn:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    background: #ccc !important;
 }

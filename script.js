@@ -452,6 +452,7 @@ function toggleTodo(id) {
         saveUserData();
         renderTodos();
         updateStats();
+        showNotification(todo.completed ? 'Task completed! 🎉' : 'Task marked as pending', 'success');
     }
 }
 
@@ -461,6 +462,9 @@ function incrementProgress(id) {
         todo.currentStep++;
         if (todo.currentStep === todo.totalSteps) {
             todo.completed = true;
+            showNotification('Task completed! 🎉', 'success');
+        } else {
+            showNotification(`Progress: ${todo.currentStep}/${todo.totalSteps} steps`, 'info');
         }
         saveUserData();
         renderTodos();
@@ -476,16 +480,18 @@ function decrementProgress(id) {
         saveUserData();
         renderTodos();
         updateStats();
+        showNotification(`Progress: ${todo.currentStep}/${todo.totalSteps} steps`, 'info');
     }
 }
 
 function deleteTodo(id) {
-    console.log('Deleting todo with ID:', id);
-    if (confirm('Are you sure you want to delete this task?')) {
+    const todo = todos.find(t => t.id === id);
+    if (todo && confirm(`Are you sure you want to delete "${todo.text}"?`)) {
         todos = todos.filter(t => t.id !== id);
         saveUserData();
         renderTodos();
         updateStats();
+        showNotification('Task deleted successfully', 'success');
     }
 }
 
@@ -493,10 +499,11 @@ function editTodo(id) {
     const todo = todos.find(t => t.id === id);
     if (todo) {
         const newText = prompt('Edit task:', todo.text);
-        if (newText && newText.trim()) {
+        if (newText && newText.trim() && newText.trim() !== todo.text) {
             todo.text = newText.trim();
             saveUserData();
             renderTodos();
+            showNotification('Task updated successfully', 'success');
         }
     }
     
@@ -553,8 +560,8 @@ function renderTodos() {
 
     if (filteredTodos.length === 0) {
         todoList.innerHTML = `
-            <div style="text-align: center; padding: 3rem; color: #999;">
-                <i class="fas fa-tasks" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+            <div class="empty-state">
+                <i class="fas fa-tasks"></i>
                 <h3>No tasks found</h3>
                 <p>Add a new task to get started!</p>
             </div>
@@ -568,58 +575,61 @@ function renderTodos() {
         todoElement.className = `todo-item ${todo.completed ? 'completed' : ''} ${todo.priority}-priority ${typeClass}`;
         
         let progressHTML = '';
-        let actionsHTML = '';
+        let checkboxHTML = '';
         
+        // Checkbox for non-descriptive tasks
+        if (todo.type !== 'descriptive') {
+            checkboxHTML = `<input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${todo.id})">`;
+        }
+        
+        // Progress bar for descriptive tasks
         if (todo.type === 'descriptive') {
             const progressPercent = (todo.currentStep / todo.totalSteps) * 100;
             progressHTML = `
                 <div class="todo-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                        </div>
+                        <div class="progress-controls">
+                            <button class="progress-btn" 
+                                    onclick="decrementProgress(${todo.id})" 
+                                    title="Previous step" 
+                                    ${todo.currentStep === 0 ? 'disabled' : ''}>
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span class="progress-text">${todo.currentStep}/${todo.totalSteps}</span>
+                            <button class="progress-btn" 
+                                    onclick="incrementProgress(${todo.id})" 
+                                    title="Next step" 
+                                    ${todo.currentStep === todo.totalSteps ? 'disabled' : ''}>
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="progress-text">${todo.currentStep}/${todo.totalSteps} steps completed</div>
-                </div>
-            `;
-            
-            actionsHTML = `
-                <div class="todo-actions">
-                    <button onclick="decrementProgress(${todo.id})" title="Previous step" ${todo.currentStep === 0 ? 'disabled' : ''}>
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button onclick="incrementProgress(${todo.id})" title="Next step" ${todo.currentStep === todo.totalSteps ? 'disabled' : ''}>
-                        <i class="fas fa-plus"></i>
-                    </button>
-                    <button onclick="editTodo(${todo.id})" title="Edit task">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button onclick="deleteTodo(${todo.id})" class="delete-btn" title="Delete task">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            `;
-        } else {
-            actionsHTML = `
-                <div class="todo-actions">
-                    <button onclick="editTodo(${todo.id})" title="Edit task">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button onclick="deleteTodo(${todo.id})" class="delete-btn" title="Delete task">
-                        <i class="fas fa-trash"></i>
-                    </button>
                 </div>
             `;
         }
         
         todoElement.innerHTML = `
-            ${todo.type !== 'descriptive' ? `<input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${todo.id})">` : ''}
+            ${checkboxHTML}
             <div class="todo-content">
                 <div class="todo-text">${todo.text}</div>
                 ${todo.description ? `<div class="todo-description">${todo.description}</div>` : ''}
                 ${progressHTML}
             </div>
-            <span class="task-type-badge type-${todo.type}">${todo.type}</span>
-            <span class="todo-priority-badge priority-${todo.priority}">${todo.priority}</span>
-            ${actionsHTML}
+            <div class="todo-meta">
+                <div class="todo-type ${todo.type}">${todo.type.charAt(0).toUpperCase() + todo.type.slice(1)}</div>
+                <div class="todo-priority ${todo.priority}">${todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1)}</div>
+            </div>
+            <div class="todo-actions">
+                <button class="edit-btn" onclick="editTodo(${todo.id})" title="Edit task">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="delete-btn" onclick="deleteTodo(${todo.id})" title="Delete task">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
         `;
 
         todoList.appendChild(todoElement);
