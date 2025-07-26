@@ -10,6 +10,9 @@ let timerState = {
     focusMinutes: 0
 };
 
+const buzzerAudio = new Audio('buzzer.mp3');
+buzzerAudio.preload = 'auto';
+
 let timerInterval;
 let currentFilter = 'all';
 let currentNoteId = null;
@@ -860,8 +863,16 @@ function completeTimerSession() {
     clearInterval(timerInterval);
     timerState.isRunning = false;
     
+    // Play buzzer sound
+    buzzerAudio.play().catch(error => {
+        console.error('Error playing buzzer sound:', error);
+    });
+
+    // Show notification with visual feedback
+    const message = timerState.isBreak ? 'Break time over! Ready to focus?' : 'Great work! Time for a break.';
+    showNotification(message, 'success');
+
     if ('Notification' in window && Notification.permission === 'granted') {
-        const message = timerState.isBreak ? 'Break time over! Ready to focus?' : 'Great work! Time for a break.';
         new Notification('ProductivePro Timer', { body: message });
     }
 
