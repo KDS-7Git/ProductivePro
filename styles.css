@@ -1054,6 +1054,8 @@ body {
     justify-content: center;
     transition: all 0.3s ease;
     font-size: 0.8rem;
+    position: relative !important;
+    overflow: hidden !important;
 }
 
 .progress-btn:hover {
@@ -1145,6 +1147,8 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 0.9rem;
+    position: relative !important;
+    overflow: hidden !important;
 }
 
 .todo-actions button:hover {

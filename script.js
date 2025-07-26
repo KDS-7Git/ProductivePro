@@ -485,26 +485,56 @@ function decrementProgress(id) {
 }
 
 function deleteTodo(id) {
+    console.log('deleteTodo function executing with ID:', id);
     const todo = todos.find(t => t.id === id);
-    if (todo && confirm(`Are you sure you want to delete "${todo.text}"?`)) {
-        todos = todos.filter(t => t.id !== id);
-        saveUserData();
-        renderTodos();
-        updateStats();
-        showNotification('Task deleted successfully', 'success');
+    console.log('Found todo:', todo);
+    
+    if (todo) {
+        if (confirm(`Are you sure you want to delete "${todo.text}"?`)) {
+            console.log('User confirmed deletion');
+            todos = todos.filter(t => t.id !== id);
+            saveUserData();
+            renderTodos();
+            updateStats();
+            showNotification('Task deleted successfully', 'success');
+            console.log('Task deleted successfully');
+        } else {
+            console.log('User cancelled deletion');
+        }
+    } else {
+        console.error('Todo not found with ID:', id);
     }
 }
 
 function editTodo(id) {
+    console.log('editTodo function executing with ID:', id);
     const todo = todos.find(t => t.id === id);
+    console.log('Found todo:', todo);
+    
     if (todo) {
         const newText = prompt('Edit task:', todo.text);
-        if (newText && newText.trim() && newText.trim() !== todo.text) {
+        console.log('New text from prompt:', newText);
+        
+        if (newText && newText.trim() !== '' && newText.trim() !== todo.text) {
             todo.text = newText.trim();
+            
+            // Allow editing description for descriptive tasks
+            if (todo.type === 'descriptive') {
+                const newDescription = prompt('Edit description (optional):', todo.description || '');
+                if (newDescription !== null) {
+                    todo.description = newDescription.trim();
+                }
+            }
+            
             saveUserData();
             renderTodos();
             showNotification('Task updated successfully', 'success');
+            console.log('Task updated successfully');
+        } else {
+            console.log('No changes made to task');
         }
+    } else {
+        console.error('Todo not found with ID:', id);
     }
     
 }
@@ -579,7 +609,7 @@ function renderTodos() {
         
         // Checkbox for non-descriptive tasks
         if (todo.type !== 'descriptive') {
-            checkboxHTML = `<input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${todo.id})">`;
+            checkboxHTML = `<input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onchange="handleToggleTodo(${todo.id})">`;
         }
         
         // Progress bar for descriptive tasks
@@ -592,17 +622,11 @@ function renderTodos() {
                             <div class="progress-fill" style="width: ${progressPercent}%"></div>
                         </div>
                         <div class="progress-controls">
-                            <button class="progress-btn" 
-                                    onclick="decrementProgress(${todo.id})" 
-                                    title="Previous step" 
-                                    ${todo.currentStep === 0 ? 'disabled' : ''}>
+                            <button class="progress-btn" onclick="handleDecrementProgress(${todo.id})" title="Previous step" ${todo.currentStep === 0 ? 'disabled' : ''}>
                                 <i class="fas fa-minus"></i>
                             </button>
                             <span class="progress-text">${todo.currentStep}/${todo.totalSteps}</span>
-                            <button class="progress-btn" 
-                                    onclick="incrementProgress(${todo.id})" 
-                                    title="Next step" 
-                                    ${todo.currentStep === todo.totalSteps ? 'disabled' : ''}>
+                            <button class="progress-btn" onclick="handleIncrementProgress(${todo.id})" title="Next step" ${todo.currentStep === todo.totalSteps ? 'disabled' : ''}>
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
@@ -623,10 +647,10 @@ function renderTodos() {
                 <div class="todo-priority ${todo.priority}">${todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1)}</div>
             </div>
             <div class="todo-actions">
-                <button class="edit-btn" onclick="editTodo(${todo.id})" title="Edit task">
+                <button class="edit-btn" onclick="handleEditTodo(${todo.id})" title="Edit task">
                     <i class="fas fa-edit"></i>
                 </button>
-                <button class="delete-btn" onclick="deleteTodo(${todo.id})" title="Delete task">
+                <button class="delete-btn" onclick="handleDeleteTodo(${todo.id})" title="Delete task">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
@@ -634,6 +658,32 @@ function renderTodos() {
 
         todoList.appendChild(todoElement);
     });
+}
+
+// Add these wrapper functions right after your renderTodos function
+function handleToggleTodo(id) {
+    console.log('Toggle todo called with ID:', id);
+    toggleTodo(id);
+}
+
+function handleEditTodo(id) {
+    console.log('Edit todo called with ID:', id);
+    editTodo(id);
+}
+
+function handleDeleteTodo(id) {
+    console.log('Delete todo called with ID:', id);
+    deleteTodo(id);
+}
+
+function handleIncrementProgress(id) {
+    console.log('Increment progress called with ID:', id);
+    incrementProgress(id);
+}
+
+function handleDecrementProgress(id) {
+    console.log('Decrement progress called with ID:', id);
+    decrementProgress(id);
 }
 
 function updateStats() {
